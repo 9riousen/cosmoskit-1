@@ -7,7 +7,7 @@ import { wallets as cosmostationWallets } from '@cosmos-kit/cosmostation';
 import { wallets as leapWallets } from '@cosmos-kit/leap';
 
 import { SignerOptions } from '@cosmos-kit/core';
-import { chains, assets } from 'chain-registry';
+import { AssetList, Chain } from '@chain-registry/types'
 import { defaultTheme } from '../config';
 import '@interchain-ui/react/styles';
 
@@ -17,12 +17,47 @@ function CreateCosmosApp({ Component, pageProps }: AppProps) {
     //   return getSigningCosmosClientOptions();
     // }
   };
+  const ebonyChain: Chain = {
+    chain_id: 'ebony-2',
+    chain_name: 'ebony',
+    status: 'live',
+    network_type: 'testnet',
+    pretty_name: 'Finschia Testnet',
+    bech32_prefix: 'tlink',
+    slip44: 438
+  };
+
+  const ebonyAssetList: AssetList = {
+    chain_name: 'ebony',
+    assets: [
+      {
+        denom_units: [
+          {
+            denom: 'tcony',
+            exponent: 0
+          },
+          {
+            denom: 'tfnsa',
+            exponent: 6
+          }
+        ],
+        base: 'tcony',
+        name: 'Test FNSA',
+        display: 'tfnsa',
+        symbol: 'TFNSA',
+        logo_URIs: {
+          png: 'https://s2.coinmarketcap.com/static/img/coins/64x64/4512.png'
+        },
+        coingecko_id: 'link'
+      }
+    ]
+  }
 
   return (
     <ChakraProvider theme={defaultTheme}>
       <ChainProvider
-        chains={chains}
-        assetLists={assets}
+        chains={[ebonyChain]}
+        assetLists={[ebonyAssetList]}
         wallets={[...keplrWallets, ...cosmostationWallets, ...leapWallets]}
         walletConnectOptions={{
           signClient: {
